@@ -134,3 +134,4 @@ while True:
             dia = "uma boa noite"
         assistent.engine_speak(f"Tenha {dia}! Até logo!")
         break
+
