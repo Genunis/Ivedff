@@ -82,6 +82,16 @@ class Virtual_assit():
 
             greet = greetigns[random.randint(0,len(greetigns)-1)]
             self.engine_speak(greet)
+        if self.there_exist(["bom dia",'boa tarde','boa noite']):
+            hora = datetime.datetime.now().strftime('%H')
+            hora = int(hora)
+            if hora < 12:
+                bom = f"bom dia {self.person}, como você está?"
+            elif hora >=12 and hora <=18:
+                bom = f"boa tarde {self.person}, como você está?"
+            else:
+                bom = f"boa noite {self.person}, como você está?"
+            self.engine_speak(bom)
 
         #google
         if self.there_exist(['procure por']) and 'youtube' not in voice_data:
@@ -114,5 +124,14 @@ while True:
     n=0
 
     if assistent.there_exist(['tchau', 'adeus', 'Vejo você depois', 'até mais']):
-        assistent.engine_speak("Tenha um bom dia! Até logo!")
+        hora = datetime.datetime.now().strftime('%H')
+        hora = int(hora)
+        if hora < 12:
+            dia = "um bom dia"
+        elif hora >=12 and hora <=18:
+            dia = "uma boa tarde"
+        else:
+            dia = "uma boa noite"
+        assistent.engine_speak(f"Tenha {dia}! Até logo!")
         break
+
