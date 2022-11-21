@@ -42,7 +42,6 @@ class Virtual_assit():
             print('olhando para a base de dados')
             try:
                 self.voice_data = self.r.recognize_google(audio, language="pt-BR") #converte audio para texto
-                print(self.voice_data)
 
             except sr.UnknownValueError:
                 self.engine_speak('Desculpe, eu não entendi o que você disse. Pode repetir?')
@@ -77,26 +76,36 @@ class Virtual_assit():
 
     def respond(self, voice_data):
         if self.there_exist(['hey', 'oi', 'olá', 'hi', 'holla']):
-            greetigns = [f'Hi {self.person}, o que está fazendo hoje?',
-                        'Oi como posso ajudá-lo?',
-                        'Oi o que você precisa?']
+            greetigns = [f'Olá {self.person}, o que está fazendo hoje?',
+                        f'Oi {self.person}, como posso ajudá-lo?',
+                        f'Oi {self.person}, o que você precisa?']
 
             greet = greetigns[random.randint(0,len(greetigns)-1)]
             self.engine_speak(greet)
+        if self.there_exist(["bom dia",'boa tarde','boa noite']):
+            hora = datetime.datetime.now().strftime('%H')
+            hora = int(hora)
+            if hora < 12:
+                bom = f"bom dia {self.person}, como você está?"
+            elif hora >=12 and hora <=18:
+                bom = f"boa tarde {self.person}, como você está?"
+            else:
+                bom = f"boa noite {self.person}, como você está?"
+            self.engine_speak(bom)
 
         #google
         if self.there_exist(['procure por']) and 'youtube' not in voice_data:
             search_term = voice_data.split("por")[-1]
             url =  "http://google.com/search?q=" + search_term
             webbrowser.get().open(url)
-            self.engine_speak("aqui está o que eu encontrei para" + search_term + 'em google')
+            self.engine_speak("aqui está o que eu encontrei para " + search_term + ' em google')
 
         #google 
-        if self.there_exist(["toque"]):
+        if self.there_exist(["toque", 'tocar']):
             search_term  = voice_data.split("por")[-1]
             musica = search_term.replace('toque','')
             resultado = pywhatkit.playonyt(musica)
-            self.engine_speak("aqui está o que eu encontrei para" + search_term + 'em youtube')
+            self.engine_speak("aqui está o que eu encontrei para" + search_term + ' em youtube')
             
         
         #horas
@@ -115,5 +124,13 @@ while True:
     n=0
 
     if assistent.there_exist(['tchau', 'adeus', 'Vejo você depois', 'até mais']):
-        assistent.engine_speak("Tenha um bom dia! Até logo!")
+        hora = datetime.datetime.now().strftime('%H')
+        hora = int(hora)
+        if hora < 12:
+            dia = "um bom dia"
+        elif hora >=12 and hora <=18:
+            dia = "uma boa tarde"
+        else:
+            dia = "uma boa noite"
+        assistent.engine_speak(f"Tenha {dia}! Até logo!")
         break
